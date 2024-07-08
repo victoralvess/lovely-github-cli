@@ -8,9 +8,15 @@ import { printUsers } from '../utils/stdout.js';
 export function fetchUser(
   getGithubUser: GetGithubUser, saveGithubUser: SaveGithubUser) {
   return async (username: string): Promise<void> => {
-    const githubUser = await getGithubUser(username);
-    const user = await trySaveUser(saveGithubUser, githubUser);
-    if (user) printUsers([user]);
+    try {
+      const githubUser = await getGithubUser(username);
+      const user = await trySaveUser(saveGithubUser, githubUser);
+      if (user) printUsers([user]);
+    } catch (e) {
+      console.error(
+        chalk.red(`error: user could not be retrieved (${e.message})`)
+      );
+    }
   };
 }
 

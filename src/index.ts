@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import chalk from 'chalk';
 import { Command, program } from 'commander';
-import { db, pgp } from './utils/db.js';
+import { closeConnection, db } from './utils/db.js';
 import {
   Options,
   collectLanguages,
@@ -61,6 +61,4 @@ async function main(): Promise<void> {
     .parseAsync();
 }
 
-main().finally(() => {
-  pgp.end();
-});
+main().finally(closeConnection);

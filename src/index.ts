@@ -2,15 +2,21 @@
 import chalk from 'chalk';
 import { Command, program } from 'commander';
 import { pgp } from './utils/db.js';
-import { Options, validateOptions } from './utils/input.js';
+import {
+  Options,
+  collectLanguages,
+  parseUsername,
+  validateOptions
+} from './utils/input.js';
 
 async function main(): Promise<void> {
   await program
     .name('lovely-github-cli')
-    .option('-u, --user <username>', 'fetch a GitHub user')
+    .option('-u, --user <username>', 'fetch a GitHub user', parseUsername)
     .option('-a, --list-all', 'display all users on the database')
     .option('-l, --location <location>', 'apply location filter')
-    .option('-L, --language <language>', 'apply language filter')
+    .option(
+      '-L, --language <language>', 'apply language filter', collectLanguages)
     .option('-k, --key <key>', 'GitHub API key')
     .action(async function (options: Options, command: Command) {
       validateOptions(options, command);

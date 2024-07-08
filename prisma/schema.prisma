@@ -1,0 +1,29 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id()
+  login    String
+  name     String
+  email    String?
+  location String?
+  company  String?
+  Repo     Repo[]
+
+  @@unique([login])
+  @@index([location])
+  @@map("users")
+}
+
+model Repo {
+  id       Int     @id()
+  language String?
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int
+
+  @@index([userId])
+  @@index([language])
+  @@map("repos")
+}

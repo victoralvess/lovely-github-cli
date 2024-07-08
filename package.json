@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/victoralvess/lovely-github-cli/issues"
   },
-  "homepage": "https://github.com/victoralvess/lovely-github-cli#readme"
+  "homepage": "https://github.com/victoralvess/lovely-github-cli#readme",
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
 }

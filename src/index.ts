@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import chalk from 'chalk';
-import { program } from 'commander';
+import { Command, program } from 'commander';
 import { pgp } from './utils/db.js';
+import { Options, validateOptions } from './utils/input.js';
 
 async function main(): Promise<void> {
   await program
@@ -10,6 +11,10 @@ async function main(): Promise<void> {
     .option('-a, --list-all', 'display all users on the database')
     .option('-l, --location <location>', 'apply location filter')
     .option('-L, --language <language>', 'apply language filter')
+    .option('-k, --key <key>', 'GitHub API key')
+    .action(async function (options: Options, command: Command) {
+      validateOptions(options, command);
+    })
     .addHelpText(
       'afterAll',
       [`\nWhen using ${chalk.bold('-L')} or ${chalk.bold('--language')},`,

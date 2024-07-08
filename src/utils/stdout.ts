@@ -1,6 +1,6 @@
 // @ts-ignore
 import chalkTable from 'chalk-table';
-import { User } from '../entities/user';
+import type { User } from '../entities/user.ts';
 
 const tableOptions = {
   leftPad: 2,

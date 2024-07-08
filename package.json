@@ -1,0 +1,26 @@
+{
+  "name": "lovely-github-cli",
+  "description": "Wrapper CLI for the GitHub Rest API.",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "bin": {
+    "lovely-github-cli": "./dist/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./dist/index.js",
+    "build": "rm -rf dist/ && tsc",
+    "postbuild": "chmod +x ./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victoralvess/lovely-github-cli.git"
+  },
+  "author": "Victor Alves <victoralves28.pg@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/victoralvess/lovely-github-cli/issues"
+  },
+  "homepage": "https://github.com/victoralvess/lovely-github-cli#readme"
+}

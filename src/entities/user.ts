@@ -5,4 +5,5 @@ export type User = {
   email: string | null;
   location: string | null;
   isPro: boolean;
+  languages: string;
 };

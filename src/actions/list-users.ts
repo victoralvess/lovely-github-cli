@@ -1,17 +1,18 @@
-import { printUsers } from '../utils/stdout.js';
 import { FilterUsers } from '../persistence/list-users.js';
 import type { Options } from '../utils/input.js';
 import chalk from 'chalk';
+import { User } from '../entities/user.js';
 
 export function listUsers(filterUsers: FilterUsers) {
-  return async (options: Options): Promise<void> => {
+  return async (options: Options): Promise<User[]> => {
     try {
-      const users = await filterUsers(options.location, options.language);
-      printUsers(users);
+      return await filterUsers(options.location, options.language);
     } catch (e) {
       console.error(
         chalk.red(`error: query failed unexpectedly (${e.message})`)
       );
+
+      return [];
     }
   };
 }

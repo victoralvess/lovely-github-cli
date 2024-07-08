@@ -3,20 +3,23 @@ import { SaveGithubUser } from '../persistence/save-github-user.js';
 import { GetGithubUser } from '../services/get-github-user.js';
 import { GithubUser } from '../entities/github-user.js';
 import { User } from '../entities/user.js';
-import { printUsers } from '../utils/stdout.js';
 
 export function fetchUser(
   getGithubUser: GetGithubUser, saveGithubUser: SaveGithubUser) {
-  return async (username: string): Promise<void> => {
+  return async (username: string): Promise<User[]> => {
     try {
       const githubUser = await getGithubUser(username);
       const user = await trySaveUser(saveGithubUser, githubUser);
-      if (user) printUsers([user]);
+      if (user) {
+        return [user];
+      }
     } catch (e) {
       console.error(
         chalk.red(`error: user could not be retrieved (${e.message})`)
       );
     }
+
+    return [];
   };
 }
 

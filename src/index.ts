@@ -14,6 +14,7 @@ import { octokitGetUser } from './services/get-github-user.js';
 import { Octokit } from '@octokit/rest';
 import { dbSaveGithubUser } from './persistence/save-github-user.js';
 import { dbFilterUsers } from './persistence/list-users.js';
+import { printUsers } from './utils/stdout.js';
 
 async function main(): Promise<void> {
   await program
@@ -28,13 +29,19 @@ async function main(): Promise<void> {
       validateOptions(options, command);
 
       if (options.user) {
-        await fetchUser(
+        const users = await fetchUser(
           octokitGetUser(new Octokit({ auth: options.key })),
           dbSaveGithubUser(db)
         )(options.user);
+
+        if (users.length) {
+          printUsers(users);
+        }
       } else {
-        await listUsers(dbFilterUsers(db))(options);
+        const users = await listUsers(dbFilterUsers(db))(options);
+        printUsers(users);
       }
+
     })
     .addHelpText(
       'afterAll',

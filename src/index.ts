@@ -17,6 +17,8 @@ import { dbFilterUsers } from './persistence/list-users.js';
 import { printUsers } from './utils/stdout.js';
 
 async function main(): Promise<void> {
+  const noop = () => { }; // to hide logs
+
   await program
     .name('lovely-github-cli')
     .option('-u, --user <username>', 'fetch a GitHub user', parseUsername)
@@ -30,7 +32,10 @@ async function main(): Promise<void> {
 
       if (options.user) {
         const users = await fetchUser(
-          octokitGetUser(new Octokit({ auth: options.key })),
+          octokitGetUser(new Octokit({
+            auth: options.key,
+            log: { info: noop, warn: noop, debug: noop, error: noop }
+          })),
           dbSaveGithubUser(db)
         )(options.user);
 

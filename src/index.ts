@@ -9,9 +9,11 @@ import {
   validateOptions
 } from './utils/input.js';
 import { fetchUser } from './actions/fetch-user.js';
+import { listUsers } from './actions/list-users.js';
 import { octokitGetUser } from './services/get-github-user.js';
 import { Octokit } from '@octokit/rest';
 import { dbSaveGithubUser } from './persistence/save-github-user.js';
+import { dbFilterUsers } from './persistence/list-users.js';
 
 async function main(): Promise<void> {
   await program
@@ -30,8 +32,9 @@ async function main(): Promise<void> {
           octokitGetUser(new Octokit({ auth: options.key })),
           dbSaveGithubUser(db)
         )(options.user);
+      } else {
+        await listUsers(dbFilterUsers(db))(options);
       }
-
     })
     .addHelpText(
       'afterAll',

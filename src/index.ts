@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 import chalk from 'chalk';
 import { Command, program } from 'commander';
-import { pgp } from './utils/db.js';
+import { db, pgp } from './utils/db.js';
 import {
   Options,
   collectLanguages,
   parseUsername,
   validateOptions
 } from './utils/input.js';
+import { fetchUser } from './actions/fetch-user.js';
+import { octokitGetUser } from './services/get-github-user.js';
+import { Octokit } from '@octokit/rest';
+import { dbSaveGithubUser } from './persistence/save-github-user.js';
 
 async function main(): Promise<void> {
   await program
@@ -20,6 +24,14 @@ async function main(): Promise<void> {
     .option('-k, --key <key>', 'GitHub API key')
     .action(async function (options: Options, command: Command) {
       validateOptions(options, command);
+
+      if (options.user) {
+        await fetchUser(
+          octokitGetUser(new Octokit({ auth: options.key })),
+          dbSaveGithubUser(db)
+        )(options.user);
+      }
+
     })
     .addHelpText(
       'afterAll',

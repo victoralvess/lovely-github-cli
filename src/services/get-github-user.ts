@@ -1,5 +1,5 @@
-import { Octokit } from "@octokit/rest";
-import { GithubUser } from "../entities/github-user.ts";
+import { Octokit } from '@octokit/rest';
+import { GithubUser } from '../entities/github-user.js';
 
 export type GetGithubUser = (username: string) => Promise<GithubUser>;
 

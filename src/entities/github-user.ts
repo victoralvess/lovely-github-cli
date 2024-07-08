@@ -1,4 +1,4 @@
-import { GithubRepo } from './github-repo.ts';
+import { GithubRepo } from './github-repo.js';
 
 export type GithubUser = {
   id: number;

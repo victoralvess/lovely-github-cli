@@ -1,6 +1,6 @@
-import pg from "pg-promise";
-import { GithubUser } from "../entities/github-user.ts";
-import { User } from "../entities/user.ts";
+import pg from 'pg-promise';
+import { GithubUser } from '../entities/github-user.js';
+import { User } from '../entities/user.js';
 
 export type SaveGithubUser = (githubUser: GithubUser) => Promise<User>;
 

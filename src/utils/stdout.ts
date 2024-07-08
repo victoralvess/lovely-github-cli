@@ -1,11 +1,11 @@
 // @ts-ignore
 import chalkTable from 'chalk-table';
-import type { User } from '../entities/user.ts';
+import type { User } from '../entities/user.js';
 
 const tableOptions = {
   leftPad: 2,
   columns: [
-    { field: "id", name: 'ID' },
+    { field: 'id', name: 'ID' },
     { field: 'login', name: 'LOGIN' },
     { field: 'name', name: 'NAME' },
     { field: 'email', name: 'EMAIL' },

@@ -1,5 +1,5 @@
-import chalk from "chalk";
-import { Command, InvalidArgumentError } from "commander";
+import chalk from 'chalk';
+import { Command, InvalidArgumentError } from 'commander';
 
 export type Options = {
   user?: string

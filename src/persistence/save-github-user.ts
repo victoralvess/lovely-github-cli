@@ -31,7 +31,8 @@ async function saveRepos(t: pg.ITask<{}>, githubUser: GithubUser, user: User)
 
   const repos = await t.many(
     insert(githubUser.repos.map(r => ({ ...r, userId: user.id })), cs)
-    + ' RETURNING language',
+    + `ON CONFLICT (id) DO UPDATE SET language = excluded.language
+    RETURNING language`,
   );
 
   return repos;
@@ -42,6 +43,12 @@ async function saveUser(t: pg.ITask<{}>, githubUser: GithubUser)
   const user = await t.one(
     `INSERT INTO users
       VALUES ($(id), $(login), $(name), $(email), $(location), $(company))
+      ON CONFLICT (id) DO UPDATE SET
+        login = excluded.login,
+        name = excluded.name,
+        email = excluded.email,
+        location = excluded.location,
+        company = excluded.company
       RETURNING *`,
     {
       ...githubUser,

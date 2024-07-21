@@ -3,7 +3,9 @@ import type { Options } from '../utils/input.js';
 import chalk from 'chalk';
 import { User } from '../entities/user.js';
 
-export function listUsers(filterUsers: FilterUsers) {
+type ListUsers = (options: Options) => Promise<User[]>;
+
+export function listUsers(filterUsers: FilterUsers): ListUsers {
   return async (options: Options): Promise<User[]> => {
     try {
       return await filterUsers(options.location, options.language);

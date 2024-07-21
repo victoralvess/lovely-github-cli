@@ -5,7 +5,7 @@ import { User } from '../entities/user.js';
 export type SaveGithubUser = (githubUser: GithubUser) => Promise<User>;
 
 export function dbSaveGithubUser(db: pg.IDatabase<{}>): SaveGithubUser {
-  return async (githubUser) => {
+  return async (githubUser: GithubUser): Promise<User> => {
     return await db.tx(async (t) => {
       const user = await saveUser(t, githubUser);
       const repos = await saveRepos(t, githubUser, user);
@@ -19,7 +19,8 @@ export function dbSaveGithubUser(db: pg.IDatabase<{}>): SaveGithubUser {
   };
 }
 
-async function saveRepos(t: pg.ITask<{}>, githubUser: GithubUser, user: User) {
+async function saveRepos(t: pg.ITask<{}>, githubUser: GithubUser, user: User)
+  : Promise<{ language: string }[]> {
   const placeholders: string[] = [];
   const cols = 3;
   const offset = new Array(cols).fill(0).map((_, i) => i + 1);

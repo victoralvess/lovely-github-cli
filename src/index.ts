@@ -27,7 +27,7 @@ async function main(): Promise<void> {
     .option(
       '-L, --language <language>', 'apply language filter', collectLanguages)
     .option('-k, --key <key>', 'GitHub API key')
-    .action(async function (options: Options, command: Command) {
+    .action(async function (options: Options, command: Command): Promise<void> {
       validateOptions(options, command);
 
       if (options.user) {

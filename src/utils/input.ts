@@ -31,7 +31,7 @@ export function validateOptions(options: Options, command: Command): void {
   }
 }
 
-export function parseUsername(username: string) {
+export function parseUsername(username: string): string {
   username = username.trim();
 
   if (username.length === 0) {
@@ -49,6 +49,6 @@ export function parseUsername(username: string) {
   return username.toLowerCase();
 }
 
-export function collectLanguages(lang: string, previous?: string[]) {
+export function collectLanguages(lang: string, previous?: string[]): string[] {
   return (previous ?? []).concat([lang]);
 }

@@ -54,7 +54,7 @@ export function dbFilterUsers(db: pg.IDatabase<{}>)
   };
 }
 
-function makeListUsersQuery(whereClause = '') {
+function makeListUsersQuery(whereClause = ''): string {
   return 'SELECT u.*, company IS NOT NULL AS "isPro",'
     + " string_agg(DISTINCT r.language, ', ') as languages" +
     ' FROM users u JOIN repos r ON u.id = r."userId"'

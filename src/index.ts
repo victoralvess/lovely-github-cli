@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import 'dotenv/config';
+
 import chalk from 'chalk';
 import { Command, program } from 'commander';
 import { closeConnection, db } from './utils/db.js';

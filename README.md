@@ -17,6 +17,8 @@ Wrapper CLI for the GitHub Rest API.
 
 ## Environment variables
 
+You can either provide them when running the CLI or using a `.env` file.
+
 - `DATABASE_URL` [REQUIRED]
 - `GITHUB_TOKEN` [OPTIONAL] - A GitHub token that can make request to the API
 

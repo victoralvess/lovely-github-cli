@@ -1,8 +1,10 @@
 import { GetGithubUser } from '../../src/services/get-github-user.js';
 import { SaveGithubUser } from '../../src/persistence/save-github-user.js';
-import { fetchUser as fetchUserFactory } from '../../src/actions/fetch-user.js';
+import {
+  fetchAndSaveUser as fetchAndSaveUserFactory
+} from '../../src/actions/fetch-user.js';
 
-describe('fetchUser', () => {
+describe('fetchAndSaveUser', () => {
   let fakeGetGithubUser: GetGithubUser;
   let fakeSaveGithubUser: SaveGithubUser;
 
@@ -41,10 +43,13 @@ describe('fetchUser', () => {
   it(
     'should fetch a user from GitHub and save them to the database',
     async () => {
-      const fetchUser = fetchUserFactory(fakeGetGithubUser, fakeSaveGithubUser);
+      const fetchAndSaveUser = fetchAndSaveUserFactory(
+        fakeGetGithubUser,
+        fakeSaveGithubUser
+      );
       const username = 'myUsername';
 
-      await expect(fetchUser(username)).resolves.toEqual([
+      await expect(fetchAndSaveUser(username)).resolves.toEqual([
         {
           id: 123,
           login: 'myusername',
@@ -59,25 +64,25 @@ describe('fetchUser', () => {
   );
 
   it('should return an empty list if the api call fails', async () => {
-    const fetchUser = fetchUserFactory(
+    const fetchAndSaveUser = fetchAndSaveUserFactory(
       () => Promise.reject(new Error('Fake API Error')),
       fakeSaveGithubUser
     );
     const username = 'testUsername';
 
-    await expect(fetchUser(username)).resolves.toEqual([]);
+    await expect(fetchAndSaveUser(username)).resolves.toEqual([]);
   });
 
   it(
     'should return an empty list if the user data cannot be saved',
     async () => {
-      const fetchUser = fetchUserFactory(
+      const fetchAndSaveUser = fetchAndSaveUserFactory(
         fakeGetGithubUser,
         () => Promise.reject(new Error('Fake DB Error'))
       );
       const username = 'testUsername';
 
-      await expect(fetchUser(username)).resolves.toEqual([]);
+      await expect(fetchAndSaveUser(username)).resolves.toEqual([]);
     }
   );
 });

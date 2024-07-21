@@ -4,7 +4,7 @@ import { GetGithubUser } from '../services/get-github-user.js';
 import { GithubUser } from '../entities/github-user.js';
 import { User } from '../entities/user.js';
 
-export function fetchUser(
+export function fetchAndSaveUser(
   getGithubUser: GetGithubUser, saveGithubUser: SaveGithubUser) {
   return async (username: string): Promise<User[]> => {
     try {

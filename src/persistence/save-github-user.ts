@@ -1,6 +1,7 @@
 import pg from 'pg-promise';
 import { GithubUser } from '../entities/github-user.js';
 import { User } from '../entities/user.js';
+import { pgp } from '../utils/db.js';
 
 export type SaveGithubUser = (githubUser: GithubUser) => Promise<User>;
 
@@ -21,20 +22,18 @@ export function dbSaveGithubUser(db: pg.IDatabase<{}>): SaveGithubUser {
 
 async function saveRepos(t: pg.ITask<{}>, githubUser: GithubUser, user: User)
   : Promise<{ language: string }[]> {
-  const placeholders: string[] = [];
-  const cols = 3;
-  const offset = new Array(cols).fill(0).map((_, i) => i + 1);
-  for (let i = 0; i < githubUser.repos.length * cols; i += cols) {
-    placeholders.push(`(${offset.map(o => '$' + (o + i)).join(', ')})`);
+  if (githubUser.repos.length <= 0) {
+    return [];
   }
 
-  const repos = githubUser.repos.length > 0 ?
-    await t.many(
-      `INSERT INTO repos VALUES ${placeholders.join(', ')}`
-      + `RETURNING language`,
-      githubUser.repos.flatMap(r => [r.id, r.language, user.id])
-    )
-    : [];
+  const { ColumnSet, insert } = pgp.helpers;
+  const cs = new ColumnSet(['id', 'language', 'userId'], { table: 'repos' });
+
+  const repos = await t.many(
+    insert(githubUser.repos.map(r => ({ ...r, userId: user.id })), cs)
+    + ' RETURNING language',
+  );
+
   return repos;
 }
 

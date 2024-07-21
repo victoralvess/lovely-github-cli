@@ -41,15 +41,13 @@ async function saveRepos(t: pg.ITask<{}>, githubUser: GithubUser, user: User)
 async function saveUser(t: pg.ITask<{}>, githubUser: GithubUser)
   : Promise<User> {
   const user = await t.one(
-    'INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-    [
-      githubUser.id,
-      githubUser.login.toLowerCase(),
-      githubUser.name,
-      githubUser.email,
-      githubUser.location,
-      githubUser.company
-    ]
+    `INSERT INTO users
+      VALUES ($(id), $(login), $(name), $(email), $(location), $(company))
+      RETURNING *`,
+    {
+      ...githubUser,
+      login: githubUser.login.toLowerCase()
+    }
   );
 
   user.isPro = !!user.company;

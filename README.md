@@ -12,9 +12,12 @@ Wrapper CLI for the GitHub Rest API.
 1. Install dependencies (`npm install`)
 2. Build the application (`npm run build`)
 3. Make the application available as a command (`npm link`) [OPTIONAL]
+4. Run migrations (`npm run prisma:migrate`)
 4. Run `lovely-github-cli` or `node ./dist/index.js`
 
 ## Environment variables
+
+You can either provide them when running the CLI or using a `.env` file.
 
 - `DATABASE_URL` [REQUIRED]
 - `GITHUB_TOKEN` [OPTIONAL] - A GitHub token that can make request to the API
